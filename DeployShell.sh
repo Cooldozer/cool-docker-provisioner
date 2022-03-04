@@ -1,7 +1,8 @@
 Sufix=$1
 PlanSize=$2
-DockerInstanceNo=$3
-location=$4
+PlanWorkerNo=$3
+DockerInstanceNo=$4
+location=$5
 
 appservice_no=${DockerInstanceNo};
 plan_size=${PlanSize}
@@ -25,7 +26,7 @@ az group create --name ${rg_name} --location ${location}
 az acr create --name ${reg_name} --resource-group ${rg_name} --sku standard --admin-enabled true
 az acr build --file Dockerfile --registry ${reg_name} --image ${image_name} .
 
-az appservice plan create --name ${plan_name} --resource-group ${rg_name} --sku ${plan_size} --is-linux
+az appservice plan create --name ${plan_name} --resource-group ${rg_name} --sku ${plan_size} --number-of-workers ${PlanWorkerNo} --is-linux
 
 for (( i=1; i <= ${appservice_no}; i++ ))
 do

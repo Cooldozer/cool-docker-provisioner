@@ -12,6 +12,9 @@ on:
       size:
         description: 'Plan instance size'
         required: true
+      workerNo:
+        description: 'Plan instance count'
+        required: true
       dockerInstanceNo:
         description: 'Number of container instances'
         required: true
@@ -42,6 +45,6 @@ jobs:
         run: cp DeployShell.sh target/DeployShell.sh
 
       - name: Run deployment
-        run: cd target && bash DeployShell.sh ${{ github.event.inputs.sufix }} ${{ github.event.inputs.size }} ${{ github.event.inputs.dockerInstanceNo }} ${{ github.event.inputs.location }}
+        run: cd target && bash DeployShell.sh ${{ github.event.inputs.sufix }} ${{ github.event.inputs.size }} ${{ github.event.inputs.workerNo }} ${{ github.event.inputs.dockerInstanceNo }} ${{ github.event.inputs.location }}
       
       
