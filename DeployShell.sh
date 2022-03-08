@@ -28,15 +28,17 @@ az group create --name ${rg_name} --location ${location}
 az acr create --name ${reg_name} --resource-group ${rg_name} --sku standard --admin-enabled true
 pushd
 cd fake
+ls
 az acr build --file Dockerfile --registry ${reg_name} --image ${fake_image_name} .
 popd
 pushd
 cd target
+ls
 az acr build --file Dockerfile --registry ${reg_name} --image ${image_name} .
 popd
-
+ls
 sed -i 's/placeholder/${reg_name}/' docker-compose.yml
-
+ls
 az appservice plan create --name ${plan_name} --resource-group ${rg_name} --sku ${plan_size} --number-of-workers ${PlanWorkerNo} --is-linux
-
+ls
 az webapp create --resource-group ${rg_name} --plan ${plan_name} --name ${service_name} --multicontainer-config-type COMPOSE --multicontainer-config-file docker-compose.yml
