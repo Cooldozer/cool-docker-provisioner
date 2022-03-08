@@ -26,11 +26,15 @@ fi
 az group create --name ${rg_name} --location ${location}
 
 az acr create --name ${reg_name} --resource-group ${rg_name} --sku standard --admin-enabled true
+pushd
+cd fake
+az acr build --file Dockerfile --registry ${reg_name} --image ${fake_image_name} .
+popd
+cd target
+az acr build --file Dockerfile --registry ${reg_name} --image ${image_name} .
+popd
 
-az acr build --file Dockerfile --registry ${reg_name} --image ${fake_image_name} ./fake
-az acr build --file Dockerfile --registry ${reg_name} --image ${image_name} ./target
-
-sed -i '' 's/placeholder./${reg_name}./' docker-compose.yml
+sed -i 's/placeholder/${reg_name}/' docker-compose.yml
 
 az appservice plan create --name ${plan_name} --resource-group ${rg_name} --sku ${plan_size} --number-of-workers ${PlanWorkerNo} --is-linux
 
