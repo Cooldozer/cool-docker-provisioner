@@ -38,7 +38,7 @@ jobs:
           ref: refs/heads/master
           path: target
 
-      - name: Install azcli
+      - name: Install bash modules
         run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && brew update && brew install azure-cli && brew install jq
 
       - name: Run deployment
