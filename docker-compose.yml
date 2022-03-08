@@ -8,5 +8,3 @@ services:
   target-service:
     image: placeholder.azurecr.io/target:latest
     restart: always
-    ports:
-      - "80:80"

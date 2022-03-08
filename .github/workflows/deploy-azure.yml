@@ -39,7 +39,7 @@ jobs:
           path: target
 
       - name: Install azcli
-        run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && brew update && brew install azure-cli
+        run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && brew update && brew install azure-cli && brew install jq
 
       - name: Run deployment
         run: bash DeployShell.sh ${{ github.event.inputs.sufix }} ${{ github.event.inputs.size }} ${{ github.event.inputs.workerNo }} ${{ github.event.inputs.dockerInstanceNo }} ${{ github.event.inputs.location }}
