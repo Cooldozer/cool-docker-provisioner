@@ -44,4 +44,8 @@ jobs:
       - name: Run deployment
         run: bash DeployShell.sh ${{ github.event.inputs.sufix }} ${{ github.event.inputs.size }} ${{ github.event.inputs.workerNo }} ${{ github.event.inputs.dockerInstanceNo }} ${{ github.event.inputs.location }}
       
-      
+      - name: publishToTest
+        uses: actions/upload-artifact@v2
+        with: 
+          name: testPublish
+          path: .

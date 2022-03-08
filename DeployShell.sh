@@ -15,6 +15,7 @@ service_name=${prefix}0demo${Sufix}
 image_name=target
 fake_image_name=fake
 
+ls
 az login --use-device-code
 
 if [ $(az group exists --name ${rg_name}) == true ]
