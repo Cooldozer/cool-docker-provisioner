@@ -26,12 +26,12 @@ fi
 az group create --name ${rg_name} --location ${location}
 
 az acr create --name ${reg_name} --resource-group ${rg_name} --sku standard --admin-enabled true
-pushd
+pushd $(pwd)
 cd fake
 ls
 az acr build --file Dockerfile --registry ${reg_name} --image ${fake_image_name} .
 popd
-pushd
+pushd $(pwd)
 cd target
 ls
 az acr build --file Dockerfile --registry ${reg_name} --image ${image_name} .
