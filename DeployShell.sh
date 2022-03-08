@@ -30,6 +30,7 @@ pushd
 cd fake
 az acr build --file Dockerfile --registry ${reg_name} --image ${fake_image_name} .
 popd
+pushd
 cd target
 az acr build --file Dockerfile --registry ${reg_name} --image ${image_name} .
 popd
