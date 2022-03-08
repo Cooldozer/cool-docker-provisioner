@@ -37,7 +37,7 @@ ls
 az acr build --file Dockerfile --registry ${reg_name} --image ${image_name} .
 popd
 ls
-sed -i 's/placeholder/${reg_name}/' docker-compose.yml
+sed -i 's/placeholder/${reg_name}/' ./docker-compose.yml
 ls
 az appservice plan create --name ${plan_name} --resource-group ${rg_name} --sku ${plan_size} --number-of-workers ${PlanWorkerNo} --is-linux
 ls
