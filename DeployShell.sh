@@ -12,7 +12,8 @@ rg_name=demo_${Sufix}
 reg_name=${prefix}0reg${Sufix}
 plan_name=${prefix}0demo_plan_${Sufix}
 service_name=${prefix}0demo${Sufix}
-image_name=${prefix}0demo${Sufix}
+image_name=target
+fake_image_name=fake
 
 az login --use-device-code
 
@@ -24,11 +25,12 @@ fi
 az group create --name ${rg_name} --location ${location}
 
 az acr create --name ${reg_name} --resource-group ${rg_name} --sku standard --admin-enabled true
-az acr build --file Dockerfile --registry ${reg_name} --image ${image_name} .
+
+az acr build --file Dockerfile --registry ${reg_name} --image ${fake_image_name} ./fake
+az acr build --file Dockerfile --registry ${reg_name} --image ${image_name} ./target
+
+sed -i '' 's/placeholder./${reg_name}./' docker-compose.yml
 
 az appservice plan create --name ${plan_name} --resource-group ${rg_name} --sku ${plan_size} --number-of-workers ${PlanWorkerNo} --is-linux
 
-for (( i=1; i <= ${appservice_no}; i++ ))
-do
-     az webapp create --resource-group ${rg_name} --plan ${plan_name} --name ${service_name}-${i} --deployment-container-image-name ${reg_name}.azurecr.io/${image_name}:latest
-done
+az webapp create --resource-group ${rg_name} --plan ${plan_name} --name ${service_name} --multicontainer-config-type COMPOSE --multicontainer-config-file docker-compose.yml
