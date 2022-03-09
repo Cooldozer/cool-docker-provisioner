@@ -1,10 +1,12 @@
 version: '3'
 services:
   fake-web:
-    image: placeholder.azurecr.io/fake:latest
+    image: reg_placeholder.azurecr.io/fake:latest
     restart: always
     ports:
       - "80:80"
   target-service:
-    image: placeholder.azurecr.io/target:latest
+    image: reg_placeholder.azurecr.io/target:latest
     restart: always
+    deploy:
+      replicas: scale_placeholder

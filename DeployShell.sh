@@ -4,7 +4,6 @@ PlanWorkerNo=$3
 DockerInstanceNo=$4
 location=$5
 
-appservice_no=${DockerInstanceNo};
 plan_size=${PlanSize}
 
 prefix=an${RANDOM:0:4}
@@ -37,11 +36,11 @@ cd target
 az acr build --file Dockerfile --registry ${reg_name} --image ${image_name} .
 popd
 
-sed -i "s/placeholder/${reg_name}/" ./docker-compose.yml
+sed -i "s/reg_placeholder/${reg_name}/" ./docker-compose.yml
+sed -i "s/scale_placeholder/${DockerInstanceNo}/" ./docker-compose.yml
 
 az appservice plan create --name ${plan_name} --resource-group ${rg_name} --sku ${plan_size} --number-of-workers ${PlanWorkerNo} --is-linux
 
 echo "Renew regestry password"
 password=$(az acr credential renew -n ${reg_name} --password-name password2 | jq .passwords[0].value)
-echo ${password}
 az webapp create --resource-group ${rg_name} --plan ${plan_name} --name ${service_name} --multicontainer-config-type COMPOSE --multicontainer-config-file docker-compose.yml --docker-registry-server-user ${reg_name} --docker-registry-server-password ${password}
