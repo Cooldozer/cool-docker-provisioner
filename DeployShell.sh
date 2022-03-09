@@ -45,3 +45,6 @@ echo "Renew regestry password"
 password=$(az acr credential renew -n ${reg_name} --password-name password2 | jq -r .passwords[0].value)
 echo ${password}
 az webapp create --resource-group ${rg_name} --plan ${plan_name} --name ${service_name} --multicontainer-config-type COMPOSE --multicontainer-config-file docker-compose.yml --docker-registry-server-user ${reg_name} --docker-registry-server-password ${password}
+az webapp config appsettings set --name ${service_name} --resource-group ${rg_name} --settings DOCKER_REGISTRY_SERVER_USERNAME=${reg_name} --settings DOCKER_REGISTRY_SERVER_PASSWORD=${password}
+az webapp config appsettings set --name ${service_name} --resource-group ${rg_name} --settings DOCKER_REGISTRY_SERVER_URL=${reg_name}.azurecr.io
+az webapp restart --name ${service_name} --resource-group ${rg_name}
