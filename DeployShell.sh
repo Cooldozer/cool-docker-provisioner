@@ -42,5 +42,6 @@ sed -i "s/scale_placeholder/${DockerInstanceNo}/" ./docker-compose.yml
 az appservice plan create --name ${plan_name} --resource-group ${rg_name} --sku ${plan_size} --number-of-workers ${PlanWorkerNo} --is-linux
 
 echo "Renew regestry password"
-password=$(az acr credential renew -n ${reg_name} --password-name password2 | jq .passwords[0].value)
+password=$(az acr credential renew -n ${reg_name} --password-name password2 | jq -r .passwords[0].value)
+echo ${password}
 az webapp create --resource-group ${rg_name} --plan ${plan_name} --name ${service_name} --multicontainer-config-type COMPOSE --multicontainer-config-file docker-compose.yml --docker-registry-server-user ${reg_name} --docker-registry-server-password ${password}
